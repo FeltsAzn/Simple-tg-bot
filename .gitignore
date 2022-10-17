@@ -1,0 +1,6 @@
+/venv
+/config.py
+/product_instructions
+/.*
+/id-s
+/.xml
