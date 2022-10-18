@@ -1,5 +1,5 @@
 /venv
-/config.py
+/bot/config.py
 /product_instructions
 /.*
 /id-s
