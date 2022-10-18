@@ -1,10 +1,9 @@
-from bot.send_file import get_file_id
-from bot.loader import bot
-from bot.config import BOT_TOKEN, ADMIN_ID
+from send_file import get_file_id
+from loader import bot
+from config import BOT_TOKEN, ADMIN_ID, ADMIN_NAME
 import telebot
 import aiohttp
 import aiofiles
-
 
 commads = ["Товар 1", "Товар 2", "Товар 3", "Связаться с поддержкой"]
 
@@ -82,7 +81,7 @@ async def product_three(message):
 
 @bot.message_handler(regexp='Связаться с поддержкой')
 async def contact(message):
-    text = "https://t.me/Andrey_mpteam"
+    text = f"https://t.me/{ADMIN_NAME}"
     await bot.send_message(message.chat.id, text)
 
 
@@ -99,18 +98,17 @@ async def invalid_command(message):
     await bot.send_message(chat_id=message.chat.id, text=text, reply_markup=markup)
 
 
-@bot.message_handler(#func=lambda mes: mes.from_user.id == ADMIN_ID,
+@bot.message_handler(func=lambda mes: mes.from_user.id == ADMIN_ID,
                      content_types=["document", "video", "audio"])
 async def handle_files(message):
     document_id = message.document.file_id
     file_info = await bot.get_file(document_id)
-    print(document_id) # Выводим file_id
+    print(document_id)  # Выводим file_id
     req = f'http://api.telegram.org/file/bot{BOT_TOKEN}/{file_info.file_path}'
     async with aiohttp.ClientSession() as session:
-        async with session.get('http://httpbin.org/get') as resp:
+        async with session.get(req) as resp:
             content = await resp.read()
-            async with aiofiles.open('content.pdf', "+wb") as file:
+            async with aiofiles.open('../product_instructions/content.pdf', "+wb") as file:
                 await file.write(content)
     # Выводим ссылку на файл
-    await bot.send_message(message.chat.id, document_id) # Отправляем пользователю file_id
-
+    await bot.send_message(message.chat.id, document_id)  # Отправляем пользователю file_id

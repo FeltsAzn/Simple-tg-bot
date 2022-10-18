@@ -1,6 +1,4 @@
-from bot.loader import bot
-from bot.heandlers import *
-from telebot import util
+from heandlers import *
 import asyncio
 import logging
 
