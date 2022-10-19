@@ -8,7 +8,6 @@ def start():
 
 
 if __name__ == '__main__':
-    # bot.infinity_polling(skip_pending=True)
     try:
         start()
     except Exception as ex:

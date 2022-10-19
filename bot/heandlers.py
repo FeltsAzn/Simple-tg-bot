@@ -36,7 +36,7 @@ async def product_one(message):
         await bot.send_message(chat_id=message.chat.id, text=text, reply_markup=markup)
         await bot.send_document(message.chat.id, file_id)
     else:
-        file = open("../product_instructions/Модели в Django. Лучшие практики .pdf", 'rb')
+        file = open("product_instructions/Модели в Django. Лучшие практики .pdf", 'rb')
         await bot.send_document(message.chat.id, file)
         await bot.send_message(chat_id=message.chat.id, text=text, reply_markup=markup)
 
@@ -74,7 +74,7 @@ async def product_three(message):
         await bot.send_message(chat_id=message.chat.id, text=text, reply_markup=markup)
         await bot.send_document(message.chat.id, file_id)
     else:
-        file = open("../product_instructions/Linux. syst.progr.2ed.pdf", 'rb')
+        file = open("product_instructions/Linux. syst.progr.2ed.pdf", 'rb')
         await bot.send_document(message.chat.id, file)
         await bot.send_message(chat_id=message.chat.id, text=text, reply_markup=markup)
 
@@ -98,17 +98,19 @@ async def invalid_command(message):
     await bot.send_message(chat_id=message.chat.id, text=text, reply_markup=markup)
 
 
+# TODO сделать автоматическое сохранение файла на сервере и добавление токена доступа
 @bot.message_handler(func=lambda mes: mes.from_user.id == ADMIN_ID,
                      content_types=["document", "video", "audio"])
 async def handle_files(message):
     document_id = message.document.file_id
     file_info = await bot.get_file(document_id)
     print(document_id)  # Выводим file_id
-    req = f'http://api.telegram.org/file/bot{BOT_TOKEN}/{file_info.file_path}'
+    print(file_info)
+    req = f'http://api.telegram.org/file/bot{BOT_TOKEN}/{file_info.file_id}'
     async with aiohttp.ClientSession() as session:
         async with session.get(req) as resp:
             content = await resp.read()
-            async with aiofiles.open('../product_instructions/content.pdf', "+wb") as file:
+            async with aiofiles.open('product_instructions/content.pdf', "+wb") as file:
                 await file.write(content)
-    # Выводим ссылку на файл
+
     await bot.send_message(message.chat.id, document_id)  # Отправляем пользователю file_id
