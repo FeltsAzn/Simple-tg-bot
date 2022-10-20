@@ -1,6 +1,6 @@
 /venv
 /bot/config.py
-/bot/product_instructions
+/bot/product_instructions/*
 /.*
 /id-s
 /.xml
