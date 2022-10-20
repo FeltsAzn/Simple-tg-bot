@@ -1,9 +1,8 @@
-from send_file import get_file_id, download_new_document
+from file_handler import get_file_id, download_new_document, check_file_repository
 from loader import bot
 from config import ADMIN_ID, ADMIN_NAME
 import telebot
-import json
-from json.decoder import JSONDecodeError
+
 
 
 commads = ["Товар 1", "Товар 2", "Товар 3", "Связаться с поддержкой"]
@@ -108,18 +107,7 @@ async def handle_files(message):
     """Получаем документ от администратора для отправки на сервер"""
     document_id = message.document.file_id
     file_info = await bot.get_file(document_id)
-
-    try:
-        with open('product_instructions/file_id.json', mode="r", encoding='utf-8') as json_file:
-            filenames: dict = json.load(json_file)
-    except FileNotFoundError:
-        """Если файл у нас не существует (удален), создается новый файл"""
-        file = open('product_instructions/file_id.json', mode="x", encoding='utf-8')
-        file.close()
-    except JSONDecodeError:
-        """Файл создан, но он пуст"""
-        filenames = {}
-
+    filenames = check_file_repository()
     if len(filenames) > 2:
         await bot.send_message(message.chat.id, "Нельзя загружать на сервер более 3-х инструкций!")
     else:
