@@ -4,7 +4,9 @@ import logging
 
 
 def start():
-    asyncio.run(bot.infinity_polling(skip_pending=True, logger_level=logging.DEBUG))
+    asyncio.run(bot.infinity_polling(skip_pending=True,
+                                     logger_level=logging.DEBUG,
+                                     timeout=5))
 
 
 if __name__ == '__main__':
