@@ -4,7 +4,6 @@ from config import ADMIN_ID, ADMIN_NAME
 import telebot
 
 
-
 commads = ["Товар 1", "Товар 2", "Товар 3", "Связаться с поддержкой"]
 
 
