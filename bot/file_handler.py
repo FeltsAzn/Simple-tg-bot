@@ -3,7 +3,7 @@ import requests
 from config import BOT_TOKEN
 
 
-def get_file_id(filename: str) -> str:
+def get_file_id(filename: str) -> str | None:
     try:
         with open('product_instructions/file_id.json', encoding='utf-8') as file:
             files = json.load(file)
@@ -14,7 +14,7 @@ def get_file_id(filename: str) -> str:
     return file_id
 
 
-def check_file_repository():
+def check_file_repository() -> dict:
     try:
         with open('product_instructions/file_id.json', mode="r", encoding='utf-8') as json_file:
             filenames: dict = json.load(json_file)

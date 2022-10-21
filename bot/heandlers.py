@@ -4,7 +4,7 @@ from config import ADMIN_ID, ADMIN_NAME
 import telebot
 
 
-commads = ["Товар 1", "Товар 2", "Товар 3", "Связаться с поддержкой"]
+commads_for_bot = ["Товар 1", "Товар 2", "Товар 3", "Связаться с поддержкой"]
 
 
 @bot.message_handler(commands=["start"])
@@ -17,7 +17,7 @@ async def start_message(message):
     markup.add(bnt1, btn2, btn3, btn4)
     text = f'Здравствуйте, {message.from_user.full_name}.\n' \
            f'Я ващ помощник в получении инструкций по товарам.\n' \
-           f'По какому товару хотите получить инструкцию?.'
+           f'По какому товару хотите получить инструкцию?'
     await bot.send_message(chat_id=message.chat.id, text=text, reply_markup=markup)
 
 
@@ -83,12 +83,14 @@ async def product_three(message):
 
 @bot.message_handler(regexp='Связаться с поддержкой')
 async def contact(message):
+    """Обработчик для выдачи контактов поддержки"""
     text = f"https://t.me/{ADMIN_NAME}"
     await bot.send_message(message.chat.id, text)
 
 
-@bot.message_handler(func=lambda message: message.text not in commads, content_types=['text'])
+@bot.message_handler(func=lambda message: message.text not in commads_for_bot, content_types=['text'])
 async def invalid_command(message):
+    """Обработчик случайного текста от пользователей"""
     markup = telebot.types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     bnt1 = telebot.types.KeyboardButton("Товар 1")
     btn2 = telebot.types.KeyboardButton("Товар 2")
